@@ -19,7 +19,7 @@ fi
 
 REPO_GIT_INIT_PATHS="kustomize/dev"
 REPO_ROOT=$(git rev-parse --show-toplevel)
-REPO_URL=${1:-git@github.com:swade1987/gitops-with-kustomize}
+REPO_URL=${1:-git@github.com:gitcubehub/gitops-with-kustomize}
 REPO_BRANCH=master
 TEMP=${REPO_ROOT}/temp
 
@@ -38,13 +38,6 @@ helm upgrade -i flux fluxcd/flux --wait \
 --set registry.pollInterval=1m \
 --set sync.state=secret \
 --set syncGarbageCollection.enabled=true \
---namespace flux
-
-echo ">>> Installing Helm Operator"
-kubectl apply -f https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/crds.yaml
-helm upgrade -i helm-operator fluxcd/helm-operator --wait \
---set git.ssh.secretName=flux-git-deploy \
---set helm.versions=v3 \
 --namespace flux
 
 echo ">>> GitHub deploy key"
